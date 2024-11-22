@@ -1,13 +1,22 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketException,Request, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import sqlite3
 from pydantic import BaseModel
 import uvicorn
+
+
+
 
 app=FastAPI()
 
 conn=sqlite3.connect('app.db')
 c=conn.cursor()
 c.execute('Create table if not exists user(id integer primary key AUTOINCREMENT,username text,email text,password text)')
+c.execute('Create table if not exists message(id integer primary key AUTOINCREMENT, sender text not null, message text not null, timestamp DATATIME default CURRENT_TIMESTAMP)')
+c.execute('create table if not exists groups (id integer primary key AUTOINCREMENT, name text not null unique, created_by text not null, created_at DATETIME default CURRENT_TIMESTAMP)')
+c.execute('create table if not exists membership(id integer primary key AUTOINCREMENT, group_id integer not null, user_id integer nt null, joined_at DATATIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (group_id) references groups(id),foreign key(user_id) references user(id))')
 conn.commit()
 conn.close()
 
