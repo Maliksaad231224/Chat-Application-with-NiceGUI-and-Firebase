@@ -16,7 +16,7 @@ c=conn.cursor()
 c.execute('Create table if not exists user(id integer primary key AUTOINCREMENT,username text,email text,password text)')
 c.execute('Create table if not exists message(id integer primary key AUTOINCREMENT, sender text not null, message text not null, timestamp DATATIME default CURRENT_TIMESTAMP)')
 c.execute('create table if not exists groups (id integer primary key AUTOINCREMENT, name text not null unique, created_by text not null, created_at DATETIME default CURRENT_TIMESTAMP)')
-c.execute('create table if not exists membership(id integer primary key AUTOINCREMENT, group_id integer not null, user_id integer nt null, joined_at DATATIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (group_id) references groups(id),foreign key(user_id) references user(id))')
+c.execute('create table if not exists membership(id integer primary key AUTOINCREMENT, group_id integer not null, user_id integer nt null, joined_at DATeTIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (group_id) references groups(id),foreign key(user_id) references user(id))')
 conn.commit()
 conn.close()
 
@@ -58,9 +58,9 @@ def delete_user(username,password):
 def update_user(email,password,username):
     conn = sqlite3.connect('app.db')
     cursor = conn.cursor()
-    cursor.execute('UPDATE user SET email=? AND password=? where username=?',(email,password,username))
+    cursor.execute('UPDATE user SET email=?, password=? where username=?',(email,password,username))
     conn.commit()
     conn.close()
     return {'message':'user updated'}
 if __name__=='__main__':
-    uvicorn.run(app,host='127.0.0.1',port=8001)
+    uvicorn.run(app,host='127.0.0.1',port=8004)
