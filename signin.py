@@ -7,7 +7,6 @@ import base64
 import os
 
 # OTP generation function
-
 def generate_otp():
     otp = "".join([str(random.randint(0, 9)) for _ in range(6)])
     return otp
@@ -18,7 +17,7 @@ async def send_otp_email_async(to_email, otp):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         admin_mail = "moizulhaq331@gmail.com"
-        passkey = "eqxm gzao hkze mfft" 
+        passkey = "eqxm gzao hkze mfft"
         await asyncio.to_thread(server.login, admin_mail, passkey)
 
         msg = EmailMessage()
@@ -33,11 +32,7 @@ async def send_otp_email_async(to_email, otp):
     except Exception as e:
         return str(e)
 
-def get_image(file):
-    with open(file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
+# Set background
 def set_background():
     image_path = 'image/login-bg.png'
     if os.path.exists(image_path):
@@ -57,125 +52,38 @@ def set_background():
             height: 100vh;
             margin: 0;
         }}
-
         .login-form {{
             background: rgba(255, 255, 255, 0.1);
-            padding: 1rem; /* Increased padding */
-            border-radius: 15px; /* More rounded corners */
+            padding: 1rem;
+            border-radius: 15px;
             border: 2px solid #fff;
             width: 500px;
-            max-width: 600px; /* Increased width */
-            height: 500px;    /* Increased height */
+            max-width: 600px;
+            height: 600px;
             backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-
-        }}
-     .login-title {{
-            text-align: center;
-            font-size: 2rem;  /* Increased font size */
-            font-weight: 500;
-            margin-bottom: 2rem;  /* Increased margin */
-        }}
-
-        .login-box {{
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #fff;
-            padding-bottom: 5rem;
-            width: 1rem;
-            margin-bottom: 1.5rem;
-        }}
-
-        .login-box input {{
-            width: 90%; /* Increased width */
-            padding: 1rem; /* Increased padding */
-            background: transparent;
-            border: 1px solid #fff;
-            border-radius: 5px;
-            color: white;
-            font-size: 1.1rem; /* Increased font size */
-        }}
-
-        .login-box label {{
-            color: #fff;
-            position: absolute;
-            top: -1rem;
-            left: 1rem;
-            font-size: 1rem;
-            transition: 0.3s ease-in-out;
-        }}
-
-        .login-eye {{
-            position: absolute;
-            right: 10px;
-            top: 30%;
-            cursor: pointer;
-        }}
-
-        .login-button {{
-            background-color: #007bff;
-            color: white;
-            padding: 1rem;  /* Increased padding */
-            width: 90%;     /* Increased width */
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2rem;  /* Increased font size */
-            cursor: pointer;
-            margin-top: 1.5rem; /* Increased margin */
-        }}
-
-        .register-text {{
-            text-align: center;
-            margin-top: 1.5rem;  /* Increased margin */
-        }}
-        .text-input-wrapper {{
-            display: flex;
-            align-items: center;
-            width: 80%;
-            margin-bottom: 10px;
-            border: 2px solid #fff;
-            border-radius: 25px;
-            background-color: transparent;
-            color:white;
-       }}
-
-        .text-input-wrapper img {{
-            width: 20px;
-            height: 20px;
-            margin-left: 10px;
-            color:white;
-        }}
-        .text-input username{{
-            color = white;
         }}
         .text-input-wrapper input {{
-            flex: 1;
-            color:white;
-            border: none;
-            outline: none;
-            padding-left: 10px;
-            background-color: transparent;
             color: white;
-            font-size: 1rem;
-            border-radius: 25px;
+            background-color: transparent;
         }}
-    </style>
+        </style>
     """
-    ui.add_head_html(page_bg_image)  # This adds the style to the page
+    ui.add_head_html(page_bg_image)
 
-# Sign Up page function
-
+# Sign up page function
 otp_storage = {}
-def signup():
-    set_background()  # Apply background styles
 
-    # Center the form container in the middle of the page
+def signup():
+    set_background()
+
+    # Create form container
     with ui.column().classes('login-form').style('text-align: center; ') as form_container:
         ui.label('Sign Up').style('color:white; font-size: 44px; text-align: center; background:none;')
-       
+        
         username = ui.input('Username').classes('text-input').style('''
             width: 80%;
             margin-bottom: 10px;
@@ -184,10 +92,8 @@ def signup():
             border-radius: 25px;
             color: black;
         ''').props('label-color=white clearable input-class=text-white')
-       
 
-        # Password input with white text and background
-        password = ui.input('Password',password=True, password_toggle_button=True).classes('text-input').style('''
+        password = ui.input('Password', password=True, password_toggle_button=True).classes('text-input').style('''
             width: 80%;
             margin-bottom: 10px;
             padding-left:10px;
@@ -197,7 +103,6 @@ def signup():
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white')
 
-        # Email input with white text and background
         email = ui.input('Email').classes('email-input').style('''
             width: 80%;
             margin-bottom: 10px;
@@ -208,51 +113,51 @@ def signup():
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white')
 
-        send_otp_button = ui.button('Send OTP')
-    
-        async def handle_send_otp():
-            if email.value:
-                otp = generate_otp()
-                result = await send_otp_email_async(email.value, otp)
-                if result == True:
-                    otp_storage[email.value] = otp
-                # Only show OTP fields after email is sent
-                    otp_digits = []
-                    ui.label('Enter the OTP sent to your email:').style('color:white;')
-                    otp_input = ui.input().style(
-                        '''
-                                   width: 80%;
+        send_otp_button = ui.button('Send OTP').style('width:80%')
+
+        # Predefine and hide OTP and result sections
+        otp_section = ui.row().style('display: none')  # Hide OTP input section initially
+        otp_input = ui.input('Enter OTP').props('maxlength=6 autocomplete=off inputmode=numeric label-color=white clearable input-class=text-white').style('''
+            width: 80%;
             margin-bottom: 10px;
             padding-left:10px;
             border: 2px solid #fff;
             border-radius: 25px;
             color: white;
             background-color: transparent;
-            ''').props('label-color=white clearable input-class=text-white')
-                    otp_input.props('maxlength=6')
-                    otp_input.props('maxlength=6 autocomplete=off inputmode=numeric')  
-                
-                # Sign up button that verifies OTP
-                    user_otp = "".join([digit.value for digit in otp_digits])
-                    sign_up_button = ui.button("Sign Up")
+        ''')
+        otp_result_label = ui.label().style('color:white')
 
-                    def handle_sign_up():
-                        if otp_input.value == otp_storage.get(email.value):
-                            if username.value and password.value:
-                                ui.label("User registered successfully!").style('color:white;')
-                            else:
-                                ui.label("Please fill in all fields.").style('color:white;')
-                        else:
-                            ui.label("Incorrect OTP. Please try again.").style('color:white;')
+        # Predefine the sign-up button, but keep it hidden initially
+        sign_up_button = ui.button('Sign Up').style('display: none; width:80%')
+        otp_section.style('display: flex') 
+        sign_up_button.style('display: block')  
+        # Hide Sign-Up button initially
 
-                    sign_up_button.on_click(handle_sign_up)
-
+        async def handle_send_otp():
+            if email.value:
+                otp = generate_otp()
+                result = await send_otp_email_async(email.value, otp)
+                if result == True:
+                    otp_storage[email.value] = otp
+                    
                 else:
-                    ui.label(f"Error sending OTP: {result}").style('color:white;')
+                    otp_result_label.set_text(f"Error sending OTP: {result}")
             else:
-                ui.label("Please enter a valid email address.").style('color:white;')
+                otp_result_label.set_text("Please enter a valid email address.")
 
-        send_otp_button.on_click(handle_send_otp)  # Start the UI
+        send_otp_button.on_click(handle_send_otp)
+
+        def handle_sign_up():
+            if otp_input.value == otp_storage.get(email.value):
+                if username.value and password.value:
+                    otp_result_label.set_text("User registered successfully!")
+                else:
+                    otp_result_label.set_text("Please fill in all fields.")
+            else:
+                otp_result_label.set_text("Incorrect OTP. Please try again.")
+
+        sign_up_button.on_click(handle_sign_up)
 
 signup()
 ui.run(port=8002)
