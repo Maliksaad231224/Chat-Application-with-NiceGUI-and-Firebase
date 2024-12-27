@@ -181,13 +181,12 @@ def signup():
             padding-left:10px;
             border: 2px solid #fff;
             border-radius: 25px;
-            color: white;
-        ''').props('label-color=cyan-8 clearable input-class=text-white')
-        username.props('autocomplete=off') 
+            color: black;
+        ''').props('label-color=white clearable input-class=text-white')
        
 
         # Password input with white text and background
-        password = ui.input('Password').classes('text-input').style('''
+        password = ui.input('Password',password=True, password_toggle_button=True).classes('text-input').style('''
             width: 80%;
             margin-bottom: 10px;
             padding-left:10px;
@@ -195,21 +194,19 @@ def signup():
             border-radius: 25px;
             color: white;
             background-color: transparent;
-        ''').props('label-color=cyan-8 clearable input-class=text-white')
-        password.props('autocomplete=off ') 
+        ''').props('label-color=white clearable input-class=text-white')
 
         # Email input with white text and background
-        email = ui.input('Email').classes('text-input').style('''
-           width: 80%;
+        email = ui.input('Email').classes('email-input').style('''
+            width: 80%;
             margin-bottom: 10px;
             padding-left:10px;
             border: 2px solid #fff;
             border-radius: 25px;
             color: white;
             background-color: transparent;
-        ''')
-        email.props('autocomplete=off') 
-        
+        ''').props('label-color=white clearable input-class=text-white')
+
         send_otp_button = ui.button('Send OTP')
     
         async def handle_send_otp():
@@ -217,10 +214,10 @@ def signup():
                 otp = generate_otp()
                 result = await send_otp_email_async(email.value, otp)
                 if result == True:
+                    ui.label("OTP has been sent to your email!").style('color:white;')
                     otp_storage[email.value] = otp
                 # Only show OTP fields after email is sent
                     otp_digits = []
-                    
                     ui.label('Enter the OTP sent to your email:').style('color:white;')
                     otp_input = ui.input().style(
                         '''
@@ -231,17 +228,18 @@ def signup():
             border-radius: 25px;
             color: white;
             background-color: transparent;
-            ''')
+            ''').props('label-color=white clearable input-class=text-white')
                     otp_input.props('maxlength=6')
                     otp_input.props('maxlength=6 autocomplete=off inputmode=numeric')  
+                
                 # Sign up button that verifies OTP
+                    user_otp = "".join([digit.value for digit in otp_digits])
                     sign_up_button = ui.button("Sign Up")
 
                     def handle_sign_up():
-                        if len(otp_input) == 6 and otp_input == otp_storage[email.value]:
+                        if len(user_otp) == 6 and user_otp == otp_storage[email.value]:
                             if username.value and password.value:
                                 ui.label("User registered successfully!").style('color:white;')
-                                #over here #
                             else:
                                 ui.label("Please fill in all fields.").style('color:white;')
                         else:
@@ -257,4 +255,4 @@ def signup():
         send_otp_button.on_click(handle_send_otp)  # Start the UI
 
 signup()
-ui.run(port=8001)
+ui.run(port=8002)
