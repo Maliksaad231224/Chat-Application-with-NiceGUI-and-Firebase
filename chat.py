@@ -1,5 +1,14 @@
 from uuid import uuid4
 from nicegui import ui
+import os
+
+image_path = 'image/login-bg.png'
+
+# Check if the background image exists, then apply it as a background
+if os.path.exists(image_path):
+    ui.image(image_path).style("position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;")
+else:
+    print("Error: Image not found at the specified path")
 
 messages = []
 

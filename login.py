@@ -85,7 +85,7 @@ def set_custom_css():
       backdrop-filter: blur(8px);
       width: 100%;
       max-width: 600px; /* Increased the max width */
-      height: 500px; /* Increased height */
+      height: 400px; /* Increased height */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -190,13 +190,16 @@ def set_custom_css():
     }
 
     .login__button {
-      width: 100%;
-      padding: 1rem;
-      border-radius: .5rem;
-      background-color: var(--white-color);
-      font-weight: var(--font-medium);
-      cursor: pointer;
-      margin-bottom: 2rem;
+       width: 80%; /* Adjust width to make it less wide */
+    padding: 0.8rem; /* Decrease padding to make the button shorter */
+    border-radius: 0.5rem; /* Keep the rounded corners */
+    background-color: var(--white-color);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    margin-top: 1.5rem; /* Add top margin to move the button lower */
+    margin-bottom: 1rem; /* Adjust bottom margin */
+    font-size: 1rem; /* Adjust font size */
+    text-align: center; /* Center text in the button */
     }
 
     .login__register {
@@ -221,6 +224,38 @@ def set_custom_css():
       top: -12px;
       font-size: var(--small-font-size);
     }
+    
+            .text-input-wrapper {
+            display: flex;
+            align-items: center;
+            width: 80%;
+            margin-bottom: 10px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            background-color: transparent;
+            color:white;
+       }
+
+        .text-input-wrapper img {
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            color:white;
+        }
+        .text-input username{
+            color = white;
+        }
+        .text-input-wrapper input {
+            flex: 1;
+            color:white;
+            border: none;
+            outline: none;
+            padding-left: 10px;
+            background-color: transparent;
+            color: white;
+            font-size: 1rem;
+            border-radius: 25px;
+        }
 
     /*=============== BREAKPOINTS ===============*/
     @media screen and (min-width: 576px) {
@@ -242,6 +277,7 @@ def check_user_credentials(username, password, users):
             return True
     return False
 
+
 # Login function
 def login():
     set_custom_css()  # Apply custom CSS
@@ -249,8 +285,23 @@ def login():
     with ui.card().classes('login__form'):
         ui.label('Login to Your Account').style('color: white; font-size: 1.2em; text-align: center;')
 
-        username = ui.input(placeholder='Username').classes('login__input')
-        password = ui.input(placeholder='Password', password=True).classes('login__input')
+        username = ui.input(placeholder='Username').classes('text-input').style('''
+            width: 100%;
+            margin-bottom: 10px;
+            padding-left:10px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            color: white;
+        ''').props('label-color=cyan-8 clearable input-class=text-white')
+        password = ui.input(placeholder='Password', password=True, password_toggle_button=True).classes('text-input').style('''
+            width: 100%;
+            margin-bottom: 10px;
+            padding-left:10px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            color: white;
+            box-sizing: border-box; 
+        ''').props('label-color=cyan-8 clearable input-class=text-white')
 
         def handle_login():
             urll = "http://127.0.0.1:8004/"
