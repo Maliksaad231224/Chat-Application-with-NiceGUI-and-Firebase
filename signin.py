@@ -142,6 +142,7 @@ def signup():
         email = ui.input('Email').classes('text-input').style('''width: 80%; margin-bottom: 10px; color: white; background-color: transparent;''')
 
         send_otp_button = ui.button('Send OTP')
+        ui.button('No Account? Sign Up', on_click=lambda: ui.open('/sign-in')).classes('login__register')
     
         async def handle_send_otp():
             if email.value:
