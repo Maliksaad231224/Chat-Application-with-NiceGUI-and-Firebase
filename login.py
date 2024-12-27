@@ -78,18 +78,18 @@ def set_custom_css():
     }
 
     .login__form {
-      background-color: hsla(0, 0%, 10%, .1);
-      border: 2px solid var(--white-color);
-      padding: 2.5rem 2rem; /* Increased padding */
-      border-radius: 1rem;
-      backdrop-filter: blur(8px);
-      width: 100%;
-      max-width: 600px; /* Increased the max width */
-      height: 500px; /* Increased height */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+          background: rgba(255, 255, 255, 0.1);
+            padding: 1rem; /* Increased padding */
+            border-radius: 15px; /* More rounded corners */
+            border: 2px solid #fff;
+            width: 500px;
+            max-width: 600px; /* Increased width */
+            height: 500px;    /* Increased height */
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
     }
 
     .login__title {
@@ -247,10 +247,28 @@ def login():
     set_custom_css()  # Apply custom CSS
 
     with ui.card().classes('login__form'):
-        ui.label('Login to Your Account').style('color: white; font-size: 1.2em; text-align: center;')
+        ui.label('Login to Your Account').style('color: white; font-size: 2.2em; text-align: center;')
 
-        username = ui.input(placeholder='Username').classes('login__input')
-        password = ui.input(placeholder='Password', password=True).classes('login__input')
+        username = ui.input(placeholder='Username').classes('login__input').style('''
+            width: 100%;
+         margin-bottom: 10px;
+            padding-left:10px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            color: white;
+            background-color: transparent;
+        ''').props('label-color=white clearable input-class=text-white')
+       
+        password = ui.input(placeholder='Password', password=True).classes('login__input').style('''
+            width: 100%;
+         margin-bottom: 10px;
+            padding-left:10px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            color: white;
+            background-color: transparent;
+        ''').props('label-color=white clearable input-class=text-white')
+       
 
         def handle_login():
             urll = "http://127.0.0.1:8004/"
