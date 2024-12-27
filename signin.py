@@ -7,6 +7,7 @@ import base64
 import os
 
 # OTP generation function
+
 def generate_otp():
     otp = "".join([str(random.randint(0, 9)) for _ in range(6)])
     return otp
@@ -214,7 +215,6 @@ def signup():
                 otp = generate_otp()
                 result = await send_otp_email_async(email.value, otp)
                 if result == True:
-                    ui.label("OTP has been sent to your email!").style('color:white;')
                     otp_storage[email.value] = otp
                 # Only show OTP fields after email is sent
                     otp_digits = []
@@ -237,7 +237,7 @@ def signup():
                     sign_up_button = ui.button("Sign Up")
 
                     def handle_sign_up():
-                        if len(user_otp) == 6 and user_otp == otp_storage[email.value]:
+                        if otp_input.value == otp_storage.get(email.value):
                             if username.value and password.value:
                                 ui.label("User registered successfully!").style('color:white;')
                             else:
