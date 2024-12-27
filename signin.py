@@ -38,7 +38,7 @@ def get_image(file):
 
 # Custom CSS for page background and container styles
 def set_background():
-    img = get_image(r'image\5053309.jpg')
+    img = get_image('image\5053309.jpg')
     page_bg_image = f"""
     <style>
     [data-testid="stAppViewContainer"] {{
