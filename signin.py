@@ -17,7 +17,7 @@ async def send_otp_email_async(to_email, otp):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         admin_mail = "moizulhaq331@gmail.com"
-        passkey = "eqxm gzao hkze mfft" 
+        passkey = "eqxm gzao hkze mfft"
         await asyncio.to_thread(server.login, admin_mail, passkey)
 
         msg = EmailMessage()
@@ -57,26 +57,28 @@ def set_background():
             margin: 0;
         }}
 
-        .login-form {{
-            background: rgba(255, 255, 255, 0.1);
-            padding: 4rem; /* Increased padding */
-            border-radius: 15px; /* More rounded corners */
-            border: 2px solid #fff;
-            width: 100%;
-            max-width: 600px; /* Increased width */
-            height: 600px;    /* Increased height */
-            backdrop-filter: blur(8px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
 
-        }}
-     .login-title {{
+
+.login-form {{
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4rem;
+    border-radius: 15px;
+    border: 2px solid #fff;
+    width: 90%;  /* Increased width */
+    max-width: 800px;
+    height: 650px;
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}}
+
+        .login-title {{
             text-align: center;
-            font-size: 2rem;  /* Increased font size */
+            font-size: 2rem;
             font-weight: 500;
-            margin-bottom: 2rem;  /* Increased margin */
+            margin-bottom: 2rem;
         }}
 
         .login-box {{
@@ -88,13 +90,13 @@ def set_background():
         }}
 
         .login-box input {{
-            width: 90%; /* Increased width */
-            padding: 1rem; /* Increased padding */
+            width: 100%;
+            padding: 1rem;
             background: transparent;
             border: 1px solid #fff;
             border-radius: 5px;
             color: white;
-            font-size: 1.1rem; /* Increased font size */
+            font-size: 1.1rem;
         }}
 
         .login-box label {{
@@ -106,28 +108,16 @@ def set_background():
             transition: 0.3s ease-in-out;
         }}
 
-        .login-eye {{
-            position: absolute;
-            right: 10px;
-            top: 30%;
-            cursor: pointer;
-        }}
-
         .login-button {{
             background-color: #007bff;
             color: white;
-            padding: 1rem;  /* Increased padding */
-            width: 90%;     /* Increased width */
+            padding: 1rem;
+            width: 100%;
             border: none;
             border-radius: 5px;
-            font-size: 1.2rem;  /* Increased font size */
+            font-size: 1.2rem;
             cursor: pointer;
-            margin-top: 1.5rem; /* Increased margin */
-        }}
-
-        .register-text {{
-            text-align: center;
-            margin-top: 1.5rem;  /* Increased margin */
+            margin-top: 1.5rem;
         }}
     </style>
     """
@@ -140,31 +130,16 @@ def signup():
     set_background()  # Apply background styles
 
     # Center the form container in the middle of the page
-    with ui.column().classes('login-form').style('text-align: center; ') as form_container:
+    with ui.column().classes('login-form').style('text-align: center;') as form_container:
         ui.label('Log In').style('color:white; font-size: 44px; text-align: center; background:none;')
        
-        username = ui.input('Username').classes('text-input').style('''
-            width: 80%;
-            margin-bottom: 10px;
-            color: white;
-            background-color: transparent;
-        ''')
+        username = ui.input('Username').classes('text-input').style('''width: 80%; margin-bottom: 10px; color: white; background-color: transparent;''')
 
         # Password input with white text and background
-        password = ui.input('Password').classes('text-input').style('''
-            width: 80%;
-            margin-bottom: 10px;
-            color: white;
-            background-color: transparent;
-        ''')
+        password = ui.input('Password').classes('text-input').style('''width: 80%; margin-bottom: 10px; color: white; background-color: transparent;''')
 
         # Email input with white text and background
-        email = ui.input('Email').classes('text-input').style('''
-            width: 80%;
-            margin-bottom: 10px;
-            color: white;
-            background-color: transparent;
-        ''')
+        email = ui.input('Email').classes('text-input').style('''width: 80%; margin-bottom: 10px; color: white; background-color: transparent;''')
 
         send_otp_button = ui.button('Send OTP')
     
@@ -204,4 +179,4 @@ def signup():
         send_otp_button.on_click(handle_send_otp)  # Start the UI
 
 signup()
-ui.run(port=8003)
+ui.run(port=8004)
