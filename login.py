@@ -205,16 +205,7 @@ def set_custom_css():
       text-decoration: underline;
     }
 
-    .login__button {
-      width: 100%;
-      padding: 1rem;
-      height:100%;
-      border-radius: .5rem;
-      background-color: var(--white-color);
-      font-weight: var(--font-medium);
-      cursor: pointer;
-      margin-bottom: 2rem;
-    }
+
 
     .login__register {
       text-align: center;
@@ -264,13 +255,13 @@ def login():
     set_custom_css()  # Apply custom CSS
 
     with ui.card().classes('login__form'):
-        ui.label('Login to Your Account').style('color: white; font-size: 2.2em; text-align: center;')
+        ui.label('Login').style('color: white; font-size: 2.2em; text-align: center;')
 
         email = ui.input('Email').classes('login__input').style('''
-            width: 100%;
+            width: 90%;
             margin-bottom: 10px;
             padding-left:10px;
-            height:200px;
+            height:150px;
             border: 2px solid #fff;
             border-radius: 25px;
             color: white;
@@ -278,11 +269,11 @@ def login():
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
        
         password = ui.input('Password', password=True).classes('login__input').style('''
-            width: 100%;
+            width: 90%;
          margin-bottom: 10px;
             padding-left:10px;
             border: 2px solid #fff;
-                height:200px;
+                height:150px;
             border-radius: 25px;
             color: white;
             background-color: transparent;
@@ -302,4 +293,4 @@ def login():
 login()
 
 # Run the NiceGUI app
-ui.run(port=8005)
+ui.run(port=8006)
