@@ -2,7 +2,22 @@ from nicegui import ui
 import requests
 import base64
 import os
+import firebase_admin
+from firebase_admin import credentials, firestore, auth, db
 
+cred = credentials.Certificate('web-chat-app-b37b1-firebase-adminsdk-jiq57-6e131301e2.json')  # Path to your service account key
+firebase_admin.initialize_app(cred)
+
+def check_login(email,password):
+    try:
+        # Create a user with the provided email and password
+        user=auth.get_user_by_email(email)
+
+    
+        print(f"Successfully Log In {user.uid}")
+        return user  # Successfully created user
+    except Exception as e:
+        print(f"Error creating user: {e}")
 
 def get_image(file):
     with open(file, 'rb') as f:
@@ -251,7 +266,7 @@ def login():
     with ui.card().classes('login__form'):
         ui.label('Login to Your Account').style('color: white; font-size: 2.2em; text-align: center;')
 
-        username = ui.input('Username').classes('login__input').style('''
+        email = ui.input('Email').classes('login__input').style('''
             width: 100%;
             margin-bottom: 10px;
             padding-left:10px;
@@ -272,20 +287,15 @@ def login():
             color: white;
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
-       
+        success_label = ui.label().classes('login__check-label').style('color: white; text-align: center; margin-top: 20px;')       
 
         def handle_login():
-            urll = "http://127.0.0.1:8004/"
-            response = requests.get(urll)
-            if response.status_code == 200:
-                data = response.json()
-                users = data['users']
-                if check_user_credentials(username.value, password.value, users):
-                    ui.notify('Login successful!', type='positive')
-                else:
-                    ui.notify('Incorrect username or password.', type='negative')
+          if email.value and password.value:
+            success=check_login(email.value,password.value)
+            if success:
+              success_label.set_text('Successful Log In')
             else:
-                ui.notify('Unable to fetch data', type='error')
+              success_label.set_text('Invalid Email or Password')
 
         ui.button('Login', on_click=handle_login).classes('login__button')
 

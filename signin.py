@@ -1,11 +1,29 @@
 from nicegui import ui
 import random
 import smtplib
+import firebase_admin
+from firebase_admin import credentials, firestore, auth, db
 from email.message import EmailMessage
 import asyncio
 import base64
 import os
 
+
+cred = credentials.Certificate('web-chat-app-b37b1-firebase-adminsdk-jiq57-6e131301e2.json')  # Path to your service account key
+firebase_admin.initialize_app(cred)
+
+def send_to_firebase(email, password):
+    try:
+        # Create a user with the provided email and password
+        user = auth.create_user(
+            email=email,
+            password=password
+        )
+        print(f"Successfully created user: {user.uid}")
+        return True  # Successfully created user
+    except Exception as e:
+        print(f"Error creating user: {e}")
+        return e  # Failure to create user
 # OTP generation function
 def generate_otp():
     otp = "".join([str(random.randint(0, 9)) for _ in range(6)])
@@ -146,10 +164,17 @@ def signup():
 
         send_otp_button.on_click(handle_send_otp)
 
+
         def handle_sign_up():
+            success=False
             if otp_input.value == otp_storage.get(email.value):
                 if username.value and password.value:
                     otp_result_label.set_text("User registered successfully!")
+                    success=send_to_firebase(email.value,password.value)
+                    if success:
+                        otp_result_label.set_text("User registered successfully!")
+                    else:
+                        otp_result_label.set_text(f"Error: {success}")
                 else:
                     otp_result_label.set_text("Please fill in all fields.")
             else:
