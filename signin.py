@@ -144,11 +144,15 @@ def signup():
         ''')
         otp_result_label = ui.label().style('color:white')
 
-        # Predefine the sign-up button, but keep it hidden initially
-        sign_up_button = ui.button('Sign Up').style('display: none; width:80%')
+
+        sign_up_button = ui.button('Sign Up').style('width: 100%; margin-top: 10px;')
         otp_section.style('display: flex') 
         sign_up_button.style('display: block')  
-        # Hide Sign-Up button initially
+        
+        with ui.row().style('width: 100%; margin-top: 20px; display: flex; justify-content: center; gap: 20px; align-items: center;'):
+            sign_up_button.style('width: 40%;') 
+            login_button = ui.button('Login').style('width: 40%;') 
+
 
         async def handle_send_otp():
             if email.value:
@@ -183,4 +187,4 @@ def signup():
         sign_up_button.on_click(handle_sign_up)
 
 signup()
-ui.run(port=8002)
+ui.run(port=8001)
