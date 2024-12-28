@@ -52,7 +52,7 @@ def set_custom_css():
 
     body,
     input,
-    button {
+    {
       font-size: var(--normal-font-size);
       font-family: var(--body-font);
     }
@@ -67,6 +67,7 @@ def set_custom_css():
       bac.
       kground-size: cover;
       background-position: center;
+      animation: animateBg 5s infinite; 
     }
 
     input,
@@ -100,7 +101,7 @@ def set_custom_css():
             border: 2px solid #fff;
             width: 500px;
             max-width: 600px; /* Increased width */
-            height: 500px;    /* Increased height */
+            height: 600px;    /* Increased height */
             backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
@@ -143,6 +144,9 @@ def set_custom_css():
       background: none;
       color: white !important; /* Force the text color to be white */
       position: relative;
+        font-size: 14px;  /* Decreased font size */
+        line-height: 1.2;  /* Reduced line height to decrease the height */
+        margin-bottom: 5px;
       z-index: 1;
     }
 
@@ -219,6 +223,25 @@ def set_custom_css():
     .login__register a:hover {
       text-decoration: underline;
     }
+button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.98);
+}
 
     .login__input:focus + .login__label {
       top: -12px;
@@ -229,6 +252,12 @@ def set_custom_css():
       top: -12px;
       font-size: var(--small-font-size);
     }
+    
+        @keyframes animateBg {
+            100% {
+                filter: hue-rotate(30deg);  /* Corrected filter property */
+            }
+        }
 
     /*=============== BREAKPOINTS ===============*/
     @media screen and (min-width: 576px) {
@@ -240,6 +269,8 @@ def set_custom_css():
         font-size: 4rem;
       }
     }
+    
+    
     """
     ui.add_head_html(f"<style>{css}</style>")
 
@@ -255,31 +286,74 @@ def login():
     set_custom_css()  # Apply custom CSS
 
     with ui.card().classes('login__form'):
-        ui.label('Login').style('color: white; font-size: 2.2em; text-align: center;')
-
+        ui.label('Login to Your Account').style('color: white; font-size: 2.2em; text-align: center;')
+        login_icon = ui.icon('login').style('font-size: 50px; color: white; margin-bottom: 10px;')
         email = ui.input('Email').classes('login__input').style('''
-            width: 90%;
+              width: 80%;
             margin-bottom: 10px;
-            padding-left:10px;
-            height:150px;
+            padding-left: 10px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            height: 63px;  /* Set specific height */
             border: 2px solid #fff;
             border-radius: 25px;
             color: white;
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
        
-        password = ui.input('Password', password=True).classes('login__input').style('''
-            width: 90%;
-         margin-bottom: 10px;
-            padding-left:10px;
+        password = ui.input('Password', password=True, password_toggle_button=True).classes('login__input').style('''
+                width: 80%;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            height: 63px;  /* Set specific height */
             border: 2px solid #fff;
-                height:150px;
             border-radius: 25px;
             color: white;
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
         success_label = ui.label().classes('login__check-label').style('color: white; text-align: center; margin-top: 20px;')       
+        
+        ui.add_head_html("""
+    <style>
+        .custom-button {
+               width: 80%;  /* Decreased width */
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        padding: 8px 16px;  /* Decreased padding for smaller height */
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;  /* Slightly smaller font */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
 
+   @keyframes animateCursor {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.2);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+        .custom-button:hover {
+            background-color: rgba255, 255, 255, 0.1);
+            transform: scale(1.05);
+            cursor: pointer;
+            animation: animateCursor 0.5s ease-in-out infinite;
+        }
+
+        .text-input:hover {
+            transform: scale(0.98);
+            cursor: pointer;
+            animation: animateCursor 0.5s ease-in-out infinite;
+        }
+    </style>
+""")
         def handle_login():
           if email.value and password.value:
             success=check_login(email.value,password.value)
@@ -288,7 +362,7 @@ def login():
             else:
               success_label.set_text('Invalid Email or Password')
 
-        ui.button('Login', on_click=handle_login).classes('login__button')
+        ui.button('Login', on_click=handle_login).classes('custom-button')
 
 login()
 

@@ -67,9 +67,29 @@ def set_background():
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: animateBg 5s infinite; 
             height: 100vh;
             margin: 0;
         }}
+button {{
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}}
+
+button:hover {{
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}}
+
+button:active {{
+    transform: scale(0.98);
+}}
         .login-form {{
             background: rgba(255, 255, 255, 0.1);
             padding: 1rem;
@@ -87,6 +107,11 @@ def set_background():
         .text-input-wrapper input {{
             color: white;
             background-color: transparent;
+        }}
+        @keyframes animateBg {{
+            100% {{
+                filter: hue-rotate(30deg);  /* Corrected filter property */
+            }}
         }}
         </style>
     """
@@ -109,6 +134,7 @@ def signup():
             border: 2px solid #fff;
             border-radius: 25px;
             color: black;
+            
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
 
         password = ui.input('Password', password=True, password_toggle_button=True).classes('text-input').style('''
@@ -129,7 +155,7 @@ def signup():
             color: white;
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
-        send_otp_button = ui.button('Send OTP').style('width:80%')
+        send_otp_button = ui.button('Send OTP').classes('otp')
 
         # Predefine and hide OTP and result sections
         otp_section = ui.row().style('display: none')  # Hide OTP input section initially
@@ -137,21 +163,80 @@ def signup():
             width: 80%;
             margin-bottom: 10px;
             padding-left:10px;
+            filter: none !important;
             border: 2px solid #fff;
             border-radius: 25px;
             color: white;
             background-color: transparent;
+        
         ''')
         otp_result_label = ui.label().style('color:white')
 
 
-        sign_up_button = ui.button('Sign Up').style('width: 100%; margin-top: 10px;')
-        otp_section.style('display: flex') 
-        sign_up_button.style('display: block')  
+        sign_up_button = None
+        login_button = None
+        otp_section.style('display: flex')   
         
-        with ui.row().style('width: 100%; margin-top: 20px; display: flex; justify-content: center; gap: 20px; align-items: center;'):
-            sign_up_button.style('width: 40%;') 
-            login_button = ui.button('Login').style('width: 40%;') 
+        with ui.row().style('width: 100%; display: flex; justify-content: center; gap: 20px;'):
+            sign_up_button = ui.button('Sign Up').classes('custom-button')
+            login_button = ui.button('Login').classes('custom-button')
+        ui.add_head_html("""
+    <style>
+        .custom-button {
+               width: 38%;  /* Decreased width */
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        padding: 8px 16px;  /* Decreased padding for smaller height */
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;  /* Slightly smaller font */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+        .otp{
+               width: 80%;  /* Decreased width */
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        padding: 8px 16px;  /* Decreased padding for smaller height */
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;  /* Slightly smaller font */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+      
+   @keyframes animateCursor {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.2);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+            
+        .otp:hover {
+            background-color: rgba255, 255, 255, 0.1);
+            transform: scale(1.05);
+            cursor: pointer;
+            animation: animateCursor 0.5s ease-in-out infinite;
+        }       
+        .custom-button:hover {
+            background-color: rgba255, 255, 255, 0.1);
+            transform: scale(1.05);
+            cursor: pointer;
+            animation: animateCursor 0.5s ease-in-out infinite;
+        }
+
+        .text-input:hover {
+            transform: scale(0.98);
+            cursor: pointer;
+            animation: animateCursor 0.5s ease-in-out infinite;
+    </style>
+""")
 
 
         async def handle_send_otp():

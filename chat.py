@@ -21,7 +21,7 @@ def chat_messages(own_id: str) -> None:
 @ui.page('/')
 async def main():
     def send() -> None:
-        stamp = datetime.now().strftime('%X')
+        stamp = datetime.now().strftime('%I:%M:%S %p')
         messages.append((user_id, avatar, text.value, stamp))
         text.value = ''
         chat_messages.refresh()
