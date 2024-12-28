@@ -120,7 +120,7 @@ button:active {{
 # Sign up page function
 otp_storage = {}
 
-def signup():
+def signup_page():
     set_background()
 
     # Create form container
@@ -269,7 +269,7 @@ def signup():
             else:
                 otp_result_label.set_text("Incorrect OTP. Please try again.")
 
+       
         sign_up_button.on_click(handle_sign_up)
+        login_button.on_click(lambda: ui.run_javascript('window.location.href = "/login"'))
 
-signup()
-ui.run(port=8001)

@@ -6,7 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore, auth, db
 
 cred = credentials.Certificate('web-chat-app-b37b1-firebase-adminsdk-jiq57-6e131301e2.json')  # Path to your service account key
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred,name='unique')
 
 def check_login(email,password):
     try:
@@ -282,7 +282,7 @@ def check_user_credentials(username, password, users):
     return False
 
 # Login function
-def login():
+def login_page():
     set_custom_css()  # Apply custom CSS
 
     with ui.card().classes('login__form'):
@@ -359,12 +359,9 @@ def login():
             success=check_login(email.value,password.value)
             if success:
               success_label.set_text('Successful Log In')
+              ui.run_javascript('window.location.href = "/chat"')
             else:
               success_label.set_text('Invalid Email or Password')
 
         ui.button('Login', on_click=handle_login).classes('custom-button')
 
-login()
-
-# Run the NiceGUI app
-ui.run(port=8006)
