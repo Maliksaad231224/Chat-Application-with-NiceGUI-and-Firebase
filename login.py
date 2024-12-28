@@ -49,7 +49,8 @@ def set_custom_css():
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-size: cover;
+      bac.
+      kground-size: cover;
       background-position: center;
     }
 
@@ -192,6 +193,7 @@ def set_custom_css():
     .login__button {
       width: 100%;
       padding: 1rem;
+      height:100%;
       border-radius: .5rem;
       background-color: var(--white-color);
       font-weight: var(--font-medium);
@@ -249,25 +251,27 @@ def login():
     with ui.card().classes('login__form'):
         ui.label('Login to Your Account').style('color: white; font-size: 2.2em; text-align: center;')
 
-        username = ui.input(placeholder='Username').classes('login__input').style('''
+        username = ui.input('Username').classes('login__input').style('''
             width: 100%;
-         margin-bottom: 10px;
+            margin-bottom: 10px;
             padding-left:10px;
+            height:200px;
             border: 2px solid #fff;
             border-radius: 25px;
             color: white;
             background-color: transparent;
-        ''').props('label-color=white clearable input-class=text-white')
+        ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
        
-        password = ui.input(placeholder='Password', password=True).classes('login__input').style('''
+        password = ui.input('Password', password=True).classes('login__input').style('''
             width: 100%;
          margin-bottom: 10px;
             padding-left:10px;
             border: 2px solid #fff;
+                height:200px;
             border-radius: 25px;
             color: white;
             background-color: transparent;
-        ''').props('label-color=white clearable input-class=text-white')
+        ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
        
 
         def handle_login():

@@ -91,7 +91,7 @@ def signup():
             border: 2px solid #fff;
             border-radius: 25px;
             color: black;
-        ''').props('label-color=white clearable input-class=text-white')
+        ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
 
         password = ui.input('Password', password=True, password_toggle_button=True).classes('text-input').style('''
             width: 80%;
@@ -101,8 +101,7 @@ def signup():
             border-radius: 25px;
             color: white;
             background-color: transparent;
-        ''').props('label-color=white clearable input-class=text-white')
-
+        ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
         email = ui.input('Email').classes('email-input').style('''
             width: 80%;
             margin-bottom: 10px;
@@ -111,8 +110,7 @@ def signup():
             border-radius: 25px;
             color: white;
             background-color: transparent;
-        ''').props('label-color=white clearable input-class=text-white')
-
+        ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
         send_otp_button = ui.button('Send OTP').style('width:80%')
 
         # Predefine and hide OTP and result sections
