@@ -11,14 +11,14 @@ def chat_app():
     @ui.refreshable
     def chat_messages(own_id: str) -> None:
         if messages:
-            for user_id, avatar, text, stamp in messages:
+            for user_id, avatar, text, stamp in reversed(messages):
                 ui.chat_message(text=text, stamp=stamp, avatar=avatar, sent=own_id == user_id)
         else:
-            ui.label('No messages yet').classes('mx-auto my-36')
+            ui.label('Welcome to the Chat Sphere').style('color:white; font-size:29px;text-align:center')
         ui.run_javascript('window.scrollTo(0, document.body.scrollHeight)')  # Scroll to the latest message
 
     def send() -> None:
-        stamp = datetime.now().strftime('%X')
+        stamp = datetime.now().strftime('%I:%M %p')
         messages.append((user_id, avatar, text.value, stamp))
         text.value = ''
         chat_messages.refresh()
@@ -33,14 +33,30 @@ def chat_app():
             transform: translate3d(0, 0, 1px) rotate(360deg);
         }
     }
+  @keyframes flowBackground {
+        0% {
+            background: linear-gradient(45deg, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+            background-position: 0 0;
+        }
+        50% {
+            background: linear-gradient(45deg, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+            background-position: 100% 100%;
+        }
+        100% {
+            background: linear-gradient(45deg, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+            background-position: 0 0;
+        }
+    }
 
     .background {
         position: fixed;
         width: 100vw;
         height: 100vh;
+         animation: flowBackground  10s ease-in-out infinite;
         top: 0;
         left: 0;
-        background: linear-gradient(to bottom, #eb6f61, rgba(4, 123, 131, 255)); /* Gradient Background */
+        background: linear-gradient(to bottom, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+
         overflow: hidden;
         z-index: -1;
     }
@@ -228,23 +244,37 @@ def chat_app():
             }
         });
     </script>
+    
+    <style>
+        .text-input:hover {
+                 transform: scale(0.98);
+            cursor: wait;
+    </style>
     ''')
 
     # UI layout for the chat interface
     with ui.footer().classes('footer'):
         ui.image(avatar).classes('logo')
         text = ui.input(placeholder='Type your message here...').on('keydown.enter', send) \
-            .props('rounded').classes('message-bar')
+            .props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false').classes('text-input').style('''
+       height: 63px; /* Set specific height */
+    padding: 6px 15px; /* Adjust padding for better alignment */
+    border: 2px solid #fff; /* White border */
+    border-radius: 25px; /* Fully rounded corners */
+    color: white; /* White text color */
+    background-color: transparent; /* Transparent background */
+    font-size: 19px; /* Readable font size */
+    width: 50%; 
+    margin: 0 auto 10px;
+      color: white; 
+    display: block;
+            '''
+            )
 
     with ui.column().classes('w-full max-w-2xl mx-auto items-stretch'):
         chat_messages(user_id)
 
 # Set up the /chat route
-@ui.page('/chat')
-def chat():
-    return chat_app()
-
-
 # Run the app
 if __name__ == "__main__":
     ui.run(port=8000)
