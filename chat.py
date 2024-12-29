@@ -5,18 +5,17 @@ from nicegui import ui
 
 messages: List[Tuple[str, str, str, str]] = []
 
+@ui.refreshable
+def chat_messages(own_id: str) -> None:
+    if messages:
+        for user_id, avatar, text, stamp in messages:
+            ui.chat_message(text=text, stamp=stamp, avatar=avatar, sent=own_id == user_id)
+    else:
+        ui.label('Welcome to the Chat Sphere').style('color:white; font-size:29px;text-align:center')
+    ui.run_javascript('window.scrollTo(0, document.body.scrollHeight)')
 
-# This function handles the chat page.
-def chat_app():
-    @ui.refreshable
-    def chat_messages(own_id: str) -> None:
-        if messages:
-            for user_id, avatar, text, stamp in reversed(messages):
-                ui.chat_message(text=text, stamp=stamp, avatar=avatar, sent=own_id == user_id)
-        else:
-            ui.label('Welcome to the Chat Sphere').style('color:white; font-size:29px;text-align:center')
-        ui.run_javascript('window.scrollTo(0, document.body.scrollHeight)')  # Scroll to the latest message
 
+async def chat_page() -> None:
     def send() -> None:
         stamp = datetime.now().strftime('%I:%M %p')
         messages.append((user_id, avatar, text.value, stamp))
@@ -25,8 +24,6 @@ def chat_app():
 
     user_id = str(uuid4())
     avatar = f'https://robohash.org/{user_id}?bgset=bg2'
-
-    # Add the CSS for the background and UI
     ui.add_css(r'''
     @keyframes move {
         100% {
@@ -35,15 +32,17 @@ def chat_app():
     }
   @keyframes flowBackground {
         0% {
-            background: linear-gradient(45deg, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+            background: linear-gradient(to bottom, rgba(177,64,53,255), rgba(139,57,57,255), #012830, #033e48);
             background-position: 0 0;
         }
         50% {
-            background: linear-gradient(45deg, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+           background: linear-gradient(to bottom, rgba(177,64,53,255), rgba(139,57,57,255), #012830, #033e48);
+
             background-position: 100% 100%;
         }
         100% {
-            background: linear-gradient(45deg, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+            background: linear-gradient(to bottom, rgba(177,64,53,255), rgba(139,57,57,255), #012830, #033e48);
+
             background-position: 0 0;
         }
     }
@@ -55,7 +54,9 @@ def chat_app():
          animation: flowBackground  10s ease-in-out infinite;
         top: 0;
         left: 0;
-        background: linear-gradient(to bottom, rgba(227,114,103,255), rgba(179,97,97,255), #034652, #05636f);
+        background: linear-gradient(to bottom, rgba(177,64,53,255), rgba(139,57,57,255), #012830, #033e48);
+
+
 
         overflow: hidden;
         z-index: -1;
@@ -159,12 +160,11 @@ def chat_app():
     }
     ''')
 
-    # Add background HTML and particles container to the page
     with ui.element('div').classes('background'):
         for _ in range(6):
             ui.element('span')
-
-    # Add particles.js script and initialization
+    
+    
     ui.add_body_html('''<div id="particles-js" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;"></div>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
@@ -251,12 +251,12 @@ def chat_app():
             cursor: wait;
     </style>
     ''')
-
-    # UI layout for the chat interface
-    with ui.footer().classes('footer'):
-        ui.image(avatar).classes('logo')
-        text = ui.input(placeholder='Type your message here...').on('keydown.enter', send) \
-            .props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false').classes('text-input').style('''
+    with ui.footer().classes('footer'), ui.column().classes('w-full max-w-3xl mx-auto my-6'):
+        with ui.row().classes('w-full no-wrap items-center'):
+            with ui.avatar().on('click', lambda: ui.navigate.to(chat_page)):
+                ui.image(avatar)
+            text = ui.input(placeholder='message').on('keydown.enter', send) \
+                 .props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false').classes('text-input').style('''
        height: 63px; /* Set specific height */
     padding: 6px 15px; /* Adjust padding for better alignment */
     border: 2px solid #fff; /* White border */
@@ -264,17 +264,14 @@ def chat_app():
     color: white; /* White text color */
     background-color: transparent; /* Transparent background */
     font-size: 19px; /* Readable font size */
-    width: 50%; 
+    width: 80%; 
     margin: 0 auto 10px;
       color: white; 
     display: block;
             '''
             )
+   
 
+    await ui.context.client.connected()  # Ensure the client is connected before running JavaScript
     with ui.column().classes('w-full max-w-2xl mx-auto items-stretch'):
         chat_messages(user_id)
-
-# Set up the /chat route
-# Run the app
-if __name__ == "__main__":
-    ui.run(port=8000)

@@ -9,8 +9,8 @@ import base64
 import os
 
 
-cred = credentials.Certificate('web-chat-app-b37b1-firebase-adminsdk-jiq57-6e131301e2.json')  # Path to your service account key
-firebase_admin.initialize_app(cred)
+cred = credentials.Certificate('web-chat-app-b37b1-firebase-adminsdk-jiq57-6e131301e2.json')
+firebase_admin.initialize_app(cred,{'databaseURL':'https://web-chat-app-b37b1-default-rtdb.firebaseio.com/'})
 
 def send_to_firebase(email, password):
     try:
