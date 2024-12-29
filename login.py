@@ -284,13 +284,6 @@ button:active {
     """
     ui.add_head_html(f"<style>{css}</style>")
 
-# Function to check user credentials
-def check_user_credentials(username, password, users):
-    for user in users:
-        if user[0] == username and user[1] == password:
-            return True
-    return False
-
 # Login function
 def login_page():
     set_custom_css()  # Apply custom CSS
@@ -368,7 +361,7 @@ def login_page():
             success=check_login(email.value,password.value)
             if success:
               success_label.set_text('Successful Log In')
-              ui.run_javascript('window.location.href = "/chat"')
+              ui.run_javascript('setTimeout(function() { window.location.href = "/chatpage"; }, 100);')
             else:
               success_label.set_text('Invalid Email or Password')
 

@@ -1,7 +1,7 @@
 from nicegui import ui
 from login import login_page
 from signin import signup_page
-from chat import chat_page
+from chat import chat_app
 
 @ui.page('/')
 def home():
@@ -15,9 +15,9 @@ def login():
 def signin():
     return signup_page()
 
-@ui.page('/chat')
+@ui.page('/chatpage')
 def chat():
-    return chat_page()
+    return chat_app()
 
 if __name__ in {"__main__", "__mp_main__"}:
-    ui.run()
+    ui.run(port=8000)
