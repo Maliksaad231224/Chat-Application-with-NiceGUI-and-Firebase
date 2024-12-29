@@ -103,11 +103,24 @@ button:active {{
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            animation: borderGlow 6s infinite alternate;
         }}
         .text-input-wrapper input {{
             color: white;
             background-color: transparent;
         }}
+        
+            @keyframes borderGlow {{
+        0% {{
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }}
+        100% {{
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }}
+    }}
+        
         @keyframes animateBg {{
             100% {{
                 filter: hue-rotate(30deg);  /* Corrected filter property */
@@ -146,7 +159,7 @@ def signup_page():
             color: white;
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
-        email = ui.input('Email').classes('email-input').style('''
+        email = ui.input('Email').classes('text-input').style('''
             width: 80%;
             margin-bottom: 10px;
             padding-left:10px;
@@ -169,7 +182,7 @@ def signup_page():
             color: white;
             background-color: transparent;
         
-        ''')
+        ''').classes('text-input')
         otp_result_label = ui.label().style('color:white')
 
 
@@ -233,8 +246,8 @@ def signup_page():
 
         .text-input:hover {
             transform: scale(0.98);
-            cursor: pointer;
-            animation: animateCursor 0.5s ease-in-out infinite;
+            cursor: wait;
+          }
     </style>
 """)
 

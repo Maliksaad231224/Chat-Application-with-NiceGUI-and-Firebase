@@ -106,9 +106,19 @@ def set_custom_css():
             display: flex;
             flex-direction: column;
             justify-content: center;
+             animation: borderGlow 6s infinite alternate;
             align-items: center;
     }
-
+    @keyframes borderGlow {
+        0% {
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        100% {
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+    }
     .login__title {
       text-align: center;
       font-size: var(--h1-font-size);
@@ -288,7 +298,7 @@ def login_page():
     with ui.card().classes('login__form'):
         ui.label('Login to Your Account').style('color: white; font-size: 2.2em; text-align: center;')
         login_icon = ui.icon('login').style('font-size: 50px; color: white; margin-bottom: 10px;')
-        email = ui.input('Email').classes('login__input').style('''
+        email = ui.input('Email').classes('text-input').style('''
               width: 80%;
             margin-bottom: 10px;
             padding-left: 10px;
@@ -301,7 +311,7 @@ def login_page():
             background-color: transparent;
         ''').props('label-color=white clearable input-class=text-white autocomplete=off spellcheck=false')
        
-        password = ui.input('Password', password=True, password_toggle_button=True).classes('login__input').style('''
+        password = ui.input('Password', password=True, password_toggle_button=True).classes('text-input').style('''
                 width: 80%;
             margin-bottom: 10px;
             padding-left: 10px;
@@ -326,7 +336,7 @@ def login_page():
         border-radius: 25px;
         cursor: pointer;
         font-size: 14px;  /* Slightly smaller font */
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        transition: background-color 0.5s ease, transform 0.5s ease;
     }
 
    @keyframes animateCursor {
@@ -348,9 +358,8 @@ def login_page():
         }
 
         .text-input:hover {
-            transform: scale(0.98);
-            cursor: pointer;
-            animation: animateCursor 0.5s ease-in-out infinite;
+                 transform: scale(0.98);
+            cursor: wait;
         }
     </style>
 """)
