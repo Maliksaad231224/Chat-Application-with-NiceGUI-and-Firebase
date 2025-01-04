@@ -5,7 +5,7 @@ import os
 import firebase_admin
 from firebase_admin import credentials, firestore, auth, db
 
-cred = credentials.Certificate('web-chat-app-b37b1-firebase-adminsdk-jiq57-6e131301e2.json')  # Path to your service account key
+cred = credentials.Certificate('<replace with file path>')  # Path to your service account key
 firebase_admin.initialize_app(cred,name='unique')
 
 def check_login(email,password):
